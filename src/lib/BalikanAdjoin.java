@@ -1,24 +1,39 @@
-public class BalAd
-{
-	public float[][] Adjoin(float[][] matrix, int rowSize, int colSize)
-	{
-		float[][] transpose = new float [colSize][rowSize];
+package lib;
 
-		for (int i = 0; i < rowSize; i++)
-			for (int j = 0; j < colSize; j++)
-				transpose[i][j] = matrix[j][i];
+import java.util.*;
+
+public class BalikanAdjoin
+{
+	public static Matrix Adjoin(Matrix matrix)
+	/* Matriks harus berbentuk persegi */
+	/* Input berupa matrix biasa */
+	/* Output berupa matrix adjoin */
+	{
+		int size = matrix.getRowEff();
+
+		Matrix kofaktor = Kofaktor.Kofaktor(matrix);
+		Matrix transpose = new Matrix(size,size);
+
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				transpose.setElmt(i,j,kofaktor.getElmt(j,i));
 
 		return transpose;
 	}
 
-	public float[][] Balikan(float[][] matrix, int rowSize, int colSize)
+	public static Matrix Balikan(Matrix matrix)
+	/* Matriks harus berbentuk persegi */
+	/* Input berupa matrix biasa */
+	/* Output berupa invers matrix */
 	{
-		// float determinan = determinan(matrix, rowSize, colSize);
-		float[][] matrixAdjoin = Adjoin(matrix, rowSize, colSize);
+		int size = matrix.getRowEff();
 
-		for (int i = 0; i < rowSize; i++)
-			for (int j = 0; j < colSize; j++)
-				matrixAdjoin[i][j] /= determinan;
+		Matrix matrixAdjoin = Adjoin(matrix);
+		double determinan = Determinant.DetCofactor(matrix);
+
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				matrixAdjoin.setElmt(i,j,matrixAdjoin.getElmt(i,j)/determinan);
 
 		return matrixAdjoin;
 	}
