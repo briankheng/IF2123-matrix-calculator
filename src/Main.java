@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import lib.Determinant;
 import lib.Matrix;
 import lib.SPL;
 
@@ -16,6 +17,9 @@ public class Main {
                 M.setElmt(i, j, x);
             }
         }
-        SPL.Gauss(M);
+        double det;
+        // test determinant cofactor (HARUS SQUARE)
+        det=Determinant.DetCofactor(M);
+        System.out.print(det);
     }
 }
