@@ -1,5 +1,6 @@
 import java.util.Scanner;
 
+import lib.Cramer;
 import lib.Determinant;
 import lib.Matrix;
 import lib.SPL;
@@ -17,9 +18,6 @@ public class Main {
                 M.setElmt(i, j, x);
             }
         }
-        double det;
-        // test determinant cofactor (HARUS SQUARE)
-        det=Determinant.DetCofactor(M);
-        System.out.print(det);
+        Cramer.Solve(M);
     }
 }
