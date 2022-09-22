@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 import lib.BalikanAdjoin;
+import lib.Cramer;
 import lib.Determinant;
 import lib.Kofaktor;
 import lib.Matrix;
@@ -19,6 +20,7 @@ public class Main {
                 M.setElmt(i, j, x);
             }
         }
+
         double det;
         // test determinant cofactor (HARUS SQUARE)
         det=Determinant.DetCofactor(M);
@@ -27,5 +29,7 @@ public class Main {
         // test adjoin (harus square jg)
         Matrix Adj = BalikanAdjoin.Adjoin(M); Adj.printMatrix();
         Matrix Bal = BalikanAdjoin.Balikan(M); Bal.printMatrix();
+
+        Cramer.Solve(M);
     }
 }
