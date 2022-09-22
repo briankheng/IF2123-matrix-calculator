@@ -24,4 +24,17 @@ public class Matrix {
     public void setElmt(int i, int j, double x){
         this.Matrix[i][j] = x;
     }
+
+    /* Output */
+    public void printMatrix()
+    {
+        for (int i = 0; i < this.row; i++)
+        {
+            for (int j = 0; j < this.col; j++)
+            {
+                System.out.print(getElmt(i,j)+" ");
+            }
+            System.out.print("\n");
+        }
+    }
 }
