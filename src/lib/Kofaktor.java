@@ -1,11 +1,18 @@
+package lib;
+
+import java.util.*;
+
 public class Kofaktor 
 {
-	public static float findDetKofaktor(float[][] matrixKofaktor, int row, int col, int rowSize, int colSize)
+	public static double findDetKofaktor(Matrix matrixKofaktor, int row, int col)
+	/* Matriks harus berbentuk persegi */
 	{
-		float[][] matrix = new float[rowSize-1][colSize-1];
+		int size = matrixKofaktor.getRowEff();
+
+		Matrix matrix = new Matrix(size-1,size-1);
 
 		int i = 0;
-		while (i < rowSize)
+		while (i < size)
 		{
 			if (i == row)
 			{
@@ -13,7 +20,7 @@ public class Kofaktor
 			}
 
 			int j = 0;
-			while (j < colSize)
+			while (j < size)
 			{
 				if (j == col)
 				{
@@ -23,35 +30,42 @@ public class Kofaktor
 				if (i < row)
 				{
 					if (j < col)
-						matrix[i][j] = matrixKofaktor[i][j];
+						matrix.setElmt(i,j,matrixKofaktor.getElmt(i,j));
 					else
-						matrix[i][j-1] = matrixKofaktor[i][j];
+						matrix.setElmt(i,j-1,matrixKofaktor.getElmt(i,j));
 				}
 				else
 				{
 					if (j < col)
-						matrix[i-1][j] = matrixKofaktor[i][j];
+						matrix.setElmt(i-1,j,matrixKofaktor.getElmt(i,j));
 					else
-						matrix[i-1][j-1] = matrixKofaktor[i][j];
+						matrix.setElmt(i-1,j-1,matrixKofaktor.getElmt(i,j));
 				}
 				j++;
 			}
 			i++;
 		}
 
-		// return determinan(matrixKofaktor);
+		return Determinant.DetCofactor(matrix);
 	}
 
-	public float[][] Kofaktor(float[][] matrix, int rowSize, int colSize)
+	public static Matrix Kofaktor(Matrix matrix)
+	/* Matriks harus berbentuk persegi */
 	{
-		float[][] matrixKofaktor = new float[rowSize][colSize];
+		int size = matrix.getRowEff();
+
+		Matrix matrixKofaktor = new Matrix(size,size);
 		
-		for (int i = 0; i < rowSize; i++)
-			for (int j = 0; j < colSize; j++)
-				matrixKofaktor[i][j] = findDetKofaktor(matrix, i, j, rowSize. colSize);
+		for (int i = 0; i < size; i++)
+		{
+			for (int j = 0; j < size; j++)
+			{
+				matrixKofaktor.setElmt(i,j,findDetKofaktor(matrix,i,j));
+				if ((i+j)%2 == 1)
+					matrixKofaktor.setElmt(i,j,matrixKofaktor.getElmt(i,j)*-1);
+			}
+		}
 
 		return matrixKofaktor;
 	}
-
-	public 
 }
