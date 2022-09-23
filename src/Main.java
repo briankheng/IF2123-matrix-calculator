@@ -4,6 +4,7 @@ import lib.BalikanAdjoin;
 import lib.Cramer;
 import lib.Determinant;
 import lib.Kofaktor;
+import lib.MLR;
 import lib.Matrix;
 import lib.SPL;
 
@@ -21,15 +22,19 @@ public class Main {
             }
         }
 
-        double det;
+        //double det;
         // test determinant cofactor (HARUS SQUARE)
-        det=Determinant.DetCofactor(M);
-        System.out.print(det);
+        //det=Determinant.DetCofactor(M);
+        //System.out.print(det);
 
         // test adjoin (harus square jg)
-        Matrix Adj = BalikanAdjoin.Adjoin(M); Adj.printMatrix();
-        Matrix Bal = BalikanAdjoin.Balikan(M); Bal.printMatrix();
+        //Matrix Adj = BalikanAdjoin.Adjoin(M); Adj.printMatrix();
+        //Matrix Bal = BalikanAdjoin.Balikan(M); Bal.printMatrix();
 
-        Cramer.Solve(M);
+        //Cramer.Solve(M);
+
+        //test Regresi Linear Ganda
+        //matrix berupa tabel data
+        MLR.Solve(M);
     }
 }
