@@ -131,6 +131,29 @@ public class SPL {
     }
     public static void InversMatrix(Matrix M){
         // Kasus normal row == col
-        // Nunggu matrix invers dari frankie
+        if(M.getColEff()-1 != M.getRowEff()){
+            System.out.println("Tidak dapat menggunakan metode invers matrix!");
+            return;
+        }
+        Matrix A = new Matrix(M.getRowEff(), M.getRowEff());
+        Matrix B = new Matrix(M.getRowEff(), 1);
+        for(int i=0;i<M.getRowEff();i++){
+            for(int j=0;j<M.getColEff();j++){
+                if(j==M.getRowEff()) B.setElmt(i, 0, M.getElmt(i, j));
+                else A.setElmt(i, j, M.getElmt(i, j));
+            }
+        }
+        A = BalikanAdjoin.Balikan(A);
+        Matrix res = new Matrix(M.getRowEff(), 1);
+        for(int i = 0; i < M.getRowEff(); i++){
+            res.setElmt(i, 0, 0);
+            for(int k = 0; k < A.getColEff(); k++){
+                res.setElmt(i, 0, res.getElmt(i, 0)+A.getElmt(i, k)*B.getElmt(k, 0));
+            }
+        }
+        double[] x = new double[A.getRowEff()];
+        for(int i = 0; i < A.getRowEff(); i++){
+            x[i] = res.getElmt(i, 0);
+        }
     }
 }
