@@ -22,10 +22,12 @@ public class Main {
             }
         }
 
-        //double det;
-        // test determinant cofactor (HARUS SQUARE)
-        //det=Determinant.DetCofactor(M);
-        //System.out.print(det);
+        double det;
+        //test determinant cofactor (HARUS SQUARE)
+        
+        det=Determinant.DetOBE(M);
+        System.out.print("\n");
+        System.out.print(det);
 
         // test adjoin (harus square jg)
         //Matrix Adj = BalikanAdjoin.Adjoin(M); Adj.printMatrix();
@@ -35,6 +37,6 @@ public class Main {
 
         //test Regresi Linear Ganda
         //matrix berupa tabel data
-        MLR.Solve(M);
+        //MLR.Solve(M);
     }
 }

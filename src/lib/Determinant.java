@@ -4,6 +4,44 @@ import java.util.*;
 
 public class Determinant{
 
+    public static double DetOBE(Matrix M){
+        //to add later : saat perlu swap
+
+        int i,j,im,jm,k;
+        int pass;
+        double temp,factor;
+        double res;
+        int nRow=M.getRowEff();
+
+        Matrix M2= new Matrix(nRow,nRow);
+        for(i=0;i<nRow;i++){
+            for(j=0;j<nRow;j++){
+                temp=M.getElmt(i, j);
+                M2.setElmt(i, j, temp);
+            }
+        }
+
+        for(i=0;i<nRow-1;i++){
+            for(j=i+1;j<nRow;j++){
+                factor=M2.getElmt(j, i)/M2.getElmt(i, i);
+                factor*=-1;
+                for(k=0;k<nRow;k++){
+                    temp=M2.getElmt(i, k)*factor;
+                    M2.setElmt(j, k, M2.getElmt(j, k)+temp);
+
+                }
+            }
+        }
+
+        res=1;
+        for(i=0;i<nRow;i++){
+            res*=M2.getElmt(i, i);
+        }
+        return res;
+
+
+    }
+
     public static double DetCofactor(Matrix M){
         int i,j,im,jm;
         int pass;
@@ -35,6 +73,7 @@ public class Determinant{
 
 
         }
+        
         return res;
 
 
