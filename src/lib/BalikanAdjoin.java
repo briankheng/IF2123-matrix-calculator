@@ -29,7 +29,7 @@ public class BalikanAdjoin
 		int size = matrix.getRowEff();
 
 		Matrix matrixAdjoin = Adjoin(matrix);
-		double determinan = Determinant.DetCofactor(matrix);
+		double determinan = Determinant.DetOBE(matrix);
 
 		for (int i = 0; i < size; i++)
 			for (int j = 0; j < size; j++)
