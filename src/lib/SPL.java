@@ -129,12 +129,8 @@ public class SPL {
         }
         // Solusi parametrik??
     }
-    public static void InversMatrix(Matrix M){
-        // Kasus normal row == col
-        if(M.getColEff()-1 != M.getRowEff()){
-            System.out.println("Tidak dapat menggunakan metode invers matrix!");
-            return;
-        }
+    public static double[] InversMatrix(Matrix M){
+        // Kasus normal row == col (Lacukan pengecekan di driver!)
         Matrix A = new Matrix(M.getRowEff(), M.getRowEff());
         Matrix B = new Matrix(M.getRowEff(), 1);
         for(int i=0;i<M.getRowEff();i++){
@@ -145,7 +141,7 @@ public class SPL {
         }
         A = BalikanAdjoin.Balikan(A);
         Matrix res = new Matrix(M.getRowEff(), 1);
-        for(int i = 0; i < M.getRowEff(); i++){
+        for(int i = 0; i < A.getRowEff(); i++){
             res.setElmt(i, 0, 0);
             for(int k = 0; k < A.getColEff(); k++){
                 res.setElmt(i, 0, res.getElmt(i, 0)+A.getElmt(i, k)*B.getElmt(k, 0));
@@ -155,5 +151,6 @@ public class SPL {
         for(int i = 0; i < A.getRowEff(); i++){
             x[i] = res.getElmt(i, 0);
         }
+        return x;
     }
 }
