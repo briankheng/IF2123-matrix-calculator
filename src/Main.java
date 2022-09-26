@@ -9,6 +9,8 @@ import lib.SPL;
 
 public class Main {
     public static void main(String[] args){
+        System.out.println("test");
+
         Scanner sc = new Scanner(System.in);
         int row = sc.nextInt();
         int col = sc.nextInt();
@@ -20,16 +22,17 @@ public class Main {
                 M.setElmt(i, j, x);
             }
         }
+        System.out.println("test");
 
-        double det;
-        // test determinant cofactor (HARUS SQUARE)
-        det=Determinant.DetCofactor(M);
-        System.out.print(det);
+        // double det;
+        // // test determinant cofactor (HARUS SQUARE)
+        // det=Determinant.DetCofactor(M);
+        // System.out.println(det);
 
         // test adjoin (harus square jg)
-        Matrix Adj = BalikanAdjoin.Adjoin(M); Adj.printMatrix();
+        // Matrix Adj = BalikanAdjoin.Adjoin(M); Adj.printMatrix();
         Matrix Bal = BalikanAdjoin.Balikan(M); Bal.printMatrix();
 
-        Cramer.Solve(M);
+        // Cramer.Solve(M);
     }
 }
