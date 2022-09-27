@@ -1,5 +1,13 @@
 package lib;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 public class SPL {
     public double[] x;
     public String[] ans;
@@ -10,6 +18,61 @@ public class SPL {
         this.ans = new String[100001];
         this.x = new double[100001];
         this.nEff = 0;
+    }
+
+    public static void DriverSPL(){
+        Scanner sc = new Scanner(System.in);
+        BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
+        System.out.printf("PILIHAN\n1. Metode eliminasi Gauss\n2. Metode eliminasi Gauss-Jordan\n3. Metode matriks balikan\n4. Kaidah Cramer\n");
+        Integer choice = sc.nextInt();
+        while(choice < 1 || choice > 4){
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            choice = sc.nextInt();
+        }
+        Matrix M = Matrix.inputMatrix();
+        SPL solution = new SPL();
+        if(choice == 1){    
+            solution.Gauss(M);
+        }
+        else if(choice == 2){
+            solution.GaussJordan(M);
+        }
+        else if(choice == 3){
+            solution.InversMatrix(M);
+        }
+        else{
+            // Kaidah Cramer
+        }
+        for(int i = 0; i < solution.nEff; i++){
+            System.out.printf(solution.ans[i]);
+        }
+        // Simpan jawaban dalam file
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        choice = sc.nextInt();
+        while(choice != 1 && choice != 2){
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            choice = sc.nextInt();
+        }
+        if(choice == 1){
+            String fileName = "";
+            System.out.printf("Masukkan nama file: ");
+            try{
+                fileName = scFile.readLine();
+            }
+            catch(IOException err){
+                err.printStackTrace();
+            }
+            try{
+                FileWriter file = new FileWriter("../test/"+fileName);
+                for(int i= 0; i < solution.nEff; i++){
+                    file.write(solution.ans[i]);
+                }
+                file.close();
+            }
+            catch(IOException err){
+                err.printStackTrace();
+            }
+        }
     }
 
     public void Gauss(Matrix M){
@@ -54,7 +117,7 @@ public class SPL {
         }
         else{
             // Many solution
-            
+
         }
     }
 
