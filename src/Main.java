@@ -3,6 +3,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
+        System.out.println("test");
+
         Scanner sc = new Scanner(System.in);
         System.out.println("MENU");
         System.out.println("1. Sistem Persamaan Linier");
