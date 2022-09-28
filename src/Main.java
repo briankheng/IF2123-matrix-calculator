@@ -27,7 +27,9 @@ public class Main {
         else if(choice == 4){
             Interpolate.SolveInterpolate();
         }
-        else if(choice == 5){}
+        else if(choice == 5){
+            Bicubic.SolveBicubic();
+        }
         else if(choice == 6){}
         else{}
     }
