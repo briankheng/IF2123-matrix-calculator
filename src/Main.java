@@ -28,7 +28,9 @@ public class Main {
         else if(choice == 5){
             Bicubic.SolveBicubic();
         }
-        else if(choice == 6){}
+        else if(choice == 6){
+            Regresi.SolveRegression();
+        }
         else{}
     }
 }
