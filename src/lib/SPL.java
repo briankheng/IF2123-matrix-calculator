@@ -1,21 +1,275 @@
 package lib;
 
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class SPL {
-    public static void Gauss(Matrix M){
-        // Kasus normal, persamaan > variabel, variabel > persamaan
-        // no solution 0 0 0 | -1
-        // many solution variabel > persamaan or 0 0 0 | 0 -> pake parametrik
-        // one solution
+    public double[] x;
+    public String[] ans;
+    public Integer nEff;
+
+    /* Constructor */
+    public SPL(){
+        this.ans = new String[100001];
+        this.x = new double[100001];
+        this.nEff = 0;
+    }
+
+    public static void DriverSPL(){
+        Scanner sc = new Scanner(System.in);
+        BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
+        System.out.printf("PILIHAN\n1. Metode eliminasi Gauss\n2. Metode eliminasi Gauss-Jordan\n3. Metode matriks balikan\n4. Kaidah Cramer\n");
+        Integer choice = sc.nextInt();
+        while(choice < 1 || choice > 4){
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            choice = sc.nextInt();
+        }
+        Matrix M = Matrix.inputMatrix();
+        SPL solution = new SPL();
+        if(choice == 1){    
+            solution.Gauss(M);
+        }
+        else if(choice == 2){
+            solution.GaussJordan(M);
+        }
+        else if(choice == 3){
+            solution.InversMatrix(M);
+        }
+        else{
+            // Kaidah Cramer
+        }
+        for(int i = 0; i < solution.nEff; i++){
+            System.out.printf(solution.ans[i]);
+        }
+        // Simpan jawaban dalam file
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        choice = sc.nextInt();
+        while(choice != 1 && choice != 2){
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            choice = sc.nextInt();
+        }
+        if(choice == 1){
+            String fileName = "";
+            System.out.printf("Masukkan nama file: ");
+            try{
+                fileName = scFile.readLine();
+            }
+            catch(IOException err){
+                err.printStackTrace();
+            }
+            try{
+                FileWriter file = new FileWriter("../test/"+fileName);
+                for(int i= 0; i < solution.nEff; i++){
+                    file.write(solution.ans[i]);
+                }
+                file.close();
+            }
+            catch(IOException err){
+                err.printStackTrace();
+            }
+        }
+    }
+
+    public void Gauss(Matrix M){
+        M = EselonBaris(M);
+
+        // Check no solution
+        for(int i = 0; i < M.getRowEff(); i++){
+            boolean allZero = true;
+            for(int j = 0; j < M.getColEff() - 1; j++){
+                if(Math.abs(M.getElmt(i, j)) > 1e-8) {
+                    allZero = false;
+                }
+            }
+            if(allZero && Math.abs(M.getElmt(i, M.getColEff()-1)) > 1e-8){
+                this.ans[0] = "Solusi tidak ada!\n";
+                this.nEff = 1;
+                return;
+            }
+        }
+
+        // Check single or many solution
+        boolean isSingleSolution = true;
+        if(M.getRowEff() < M.getColEff()-1) isSingleSolution = false;
+        if(isSingleSolution){
+            for(int i = 0; i < M.getColEff()-1; i++){
+                if(M.getElmt(i, i) != 1) isSingleSolution = false;
+            }
+        }
+        
+        // Backward substitution (Single solution)
+        if(isSingleSolution){
+            for(int i = M.getColEff()-2; i >= 0; i--){
+                this.x[i] = M.getElmt(i, M.getColEff()-1);
+                for(int j = i+1; j < M.getColEff()-1; j++){
+                    this.x[i] -= M.getElmt(i, j) * this.x[j];
+                }
+            }
+            for(int i = 0; i < M.getColEff()-1; i++){
+                this.ans[i] = "X"+Integer.toString(i+1)+" = "+Double.toString(this.x[i])+"\n";
+            }
+            this.nEff = M.getColEff()-1;
+        }
+        else{
+            // Many solution
+            M = EselonBarisTereduksi(M);
+            boolean[] visited = new boolean[M.getColEff()-1];
+            char[] parametric = new char[M.getColEff()-1];
+            Integer cur = 0;
+            this.nEff = M.getColEff()-1;
+            for(int i = 0; i < M.getColEff()-1; i++) visited[i] = false;
+            for(int i = 0; i < M.getRowEff(); i++){
+                for(int j = i; j < M.getColEff()-1; j++){
+                    if(M.getElmt(i, j) == 1){
+                        visited[j] = true;
+                        String temp = Double.toString(M.getElmt(i, M.getColEff()-1));
+                        for(int k = j+1; k < M.getColEff()-1; k++){
+                            if(Math.abs(M.getElmt(i, k)) > 1e-8){
+                                if(!visited[k]){
+                                    visited[k] = true;
+                                    parametric[k] = (char)(97+cur++);
+                                    this.ans[k] = "X"+Integer.toString(k+1)+" = "+Character.toString(parametric[k])+"\n";
+                                }
+                                if(M.getElmt(i, k) > 0) temp += " - " + Double.toString(Math.abs(M.getElmt(i, k))) + Character.toString(parametric[k]);
+                                else temp += " + " + Double.toString(Math.abs(M.getElmt(i, k))) + Character.toString(parametric[k]);
+                            }
+                        }
+                        this.ans[j] = "X"+Integer.toString(j+1)+" = "+temp+"\n";
+                        break;
+                    }
+                    else{
+                        if(!visited[j]){
+                            visited[j] = true;
+                            parametric[j] = (char)(97+cur++);
+                            this.ans[j] = "X"+Integer.toString(j+1)+" = "+Character.toString(parametric[j])+"\n";
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void GaussJordan(Matrix M){
+        M = EselonBarisTereduksi(M);
+
+        // Check no solution
+        for(int i = 0; i < M.getRowEff(); i++){
+            boolean allZero = true;
+            for(int j = 0; j < M.getColEff() - 1; j++){
+                if(M.getElmt(i, j) != 0) {
+                    allZero = false;
+                }
+            }
+            if(allZero && Math.abs(M.getElmt(i, M.getColEff()-1)) > 1e-8){
+                this.ans[0] = "Solusi tidak ada!\n";
+                this.nEff = 1;
+                return;
+            }
+        }
+
+        // Check single or many solution
+        boolean isSingleSolution = true;
+        if(M.getRowEff() < M.getColEff()-1) isSingleSolution = false;
+        if(isSingleSolution){
+            for(int i = 0; i < M.getColEff()-1; i++){
+                if(M.getElmt(i, i) != 1) isSingleSolution = false;
+            }
+        }
+        
+        // Backward substitution (Single solution)
+        if(isSingleSolution){
+            for(int i = M.getColEff()-2; i >= 0; i--){
+                this.x[i] = M.getElmt(i, M.getColEff()-1);
+            }
+            for(int i = 0; i < M.getColEff()-1; i++){
+                this.ans[i] = "X"+Integer.toString(i+1)+" = "+Double.toString(this.x[i])+"\n";
+            }
+            this.nEff = M.getColEff()-1;
+        }
+        else{
+            // Many solution
+            boolean[] visited = new boolean[M.getColEff()-1];
+            char[] parametric = new char[M.getColEff()-1];
+            Integer cur = 0;
+            this.nEff = M.getColEff()-1;
+            for(int i = 0; i < M.getColEff()-1; i++) visited[i] = false;
+            for(int i = 0; i < M.getRowEff(); i++){
+                for(int j = i; j < M.getColEff()-1; j++){
+                    if(M.getElmt(i, j) == 1){
+                        visited[j] = true;
+                        String temp = Double.toString(M.getElmt(i, M.getColEff()-1));
+                        for(int k = j+1; k < M.getColEff()-1; k++){
+                            if(Math.abs(M.getElmt(i, k)) > 1e-8){
+                                if(!visited[k]){
+                                    visited[k] = true;
+                                    parametric[k] = (char)(97+cur++);
+                                    this.ans[k] = "X"+Integer.toString(k+1)+" = "+Character.toString(parametric[k])+"\n";
+                                }
+                                if(M.getElmt(i, k) > 0) temp += " - " + Double.toString(Math.abs(M.getElmt(i, k))) + Character.toString(parametric[k]);
+                                else temp += " + " + Double.toString(Math.abs(M.getElmt(i, k))) + Character.toString(parametric[k]);
+                            }
+                        }
+                        this.ans[j] = "X"+Integer.toString(j+1)+" = "+temp+"\n";
+                        break;
+                    }
+                    else{
+                        if(!visited[j]){
+                            visited[j] = true;
+                            parametric[j] = (char)(97+cur++);
+                            this.ans[j] = "X"+Integer.toString(j+1)+" = "+Character.toString(parametric[j])+"\n";
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    public void InversMatrix(Matrix M){
+        if(M.getRowEff() != M.getColEff()-1 || Determinant.DetCofactor(M) == 0){
+            this.ans[0] = "Tidak dapat menggunakan metode matriks balikan!\n";
+            this.nEff = 1;
+            return;
+        }
+        Matrix A = new Matrix(M.getRowEff(), M.getRowEff());
+        Matrix B = new Matrix(M.getRowEff(), 1);
+        for(int i = 0; i < M.getRowEff(); i++){
+            for(int j = 0; j < M.getColEff(); j++){
+                if(j == M.getColEff()-1) B.setElmt(i, 0, M.getElmt(i, j));
+                else A.setElmt(i, j, M.getElmt(i, j));
+            }
+        }
+        A = BalikanAdjoin.Balikan(A);
+        Matrix res = new Matrix(M.getRowEff(), 1);
+        for(int i = 0; i < A.getRowEff(); i++){
+            res.setElmt(i, 0, 0);
+            for(int k = 0; k < A.getColEff(); k++){
+                res.setElmt(i, 0, res.getElmt(i, 0)+A.getElmt(i, k)*B.getElmt(k, 0));
+            }
+        }
+        for(int i = 0; i < res.getRowEff(); i++){
+            this.x[i] = res.getElmt(i, 0);
+        }
+        for(int i = 0; i < res.getRowEff(); i++){
+            this.ans[i] = "X"+Integer.toString(i+1)+" = "+Double.toString(this.x[i])+"\n";
+        }
+        this.nEff = res.getRowEff();
+    }
+
+    /* Fungsi */
+    public Matrix EselonBaris(Matrix M){
         int idxRow = 0;
         for(int k = 0; k < M.getColEff() - 1; k++){
             if(idxRow == M.getRowEff()) break;
-            boolean isZero = (M.getElmt(idxRow, k) == 0);
+            boolean isZero = (Math.abs(M.getElmt(idxRow, k)) < 1e-8);
             int tempRow = idxRow;
             while(isZero && tempRow+1 < M.getRowEff()){
                 tempRow++;
-                if(M.getElmt(tempRow, k) != 0){
+                if(Math.abs(M.getElmt(tempRow, k)) > 1e-8){
                     // Swap row
                     double[] temp = new double[M.getColEff()];
                     for(int j = 0; j < M.getColEff(); j++){
@@ -36,7 +290,7 @@ public class SPL {
                 }
                 
                 for(int i = idxRow + 1; i < M.getRowEff(); i++){
-                    if(M.getElmt(i, k) != 0){
+                    if(Math.abs(M.getElmt(i, k)) > 1e-8){
                         double diff = M.getElmt(i, k);
                         for(int j = k; j < M.getColEff(); j++){
                             M.setElmt(i, j, M.getElmt(i, j) - (M.getElmt(idxRow, j) * diff));
@@ -46,111 +300,24 @@ public class SPL {
                 idxRow++;
             }
         }
-        // Check no solution
-        for(int i = 0; i < M.getRowEff(); i++){
-            boolean allZero = true;
-            for(int j = 0; j < M.getColEff() - 1; j++){
-                if(M.getElmt(i, j) != 0) {
-                    allZero = false;
-                }
-            }
-            if(allZero && M.getElmt(i, M.getColEff()-1) != 0){
-                System.out.println("Solusi tidak ada.");
-                return;
-            }
-        }
-        // Backward substitution (Single solution)
-        double[] x = new double[M.getRowEff()];
-        for(int i = M.getRowEff()-1; i >= 0; i--){
-            x[i] = M.getElmt(i, M.getRowEff());
-            for(int j = i+1; j < M.getRowEff(); j++){
-                x[i] -= M.getElmt(i, j) * x[j];
-            }
-        }
-        // Solusi parametrik??
+        return M;
     }
 
-    public static void GaussJordan(Matrix M){
-        int idxRow = 0;
-        for(int k = 0; k < M.getColEff() - 1; k++){
-            if(idxRow == M.getRowEff()) break;
-            boolean isZero = (M.getElmt(idxRow, k) == 0);
-            int tempRow = idxRow;
-            while(isZero && tempRow+1 < M.getRowEff()){
-                tempRow++;
-                if(M.getElmt(tempRow, k) != 0){
-                    // Swap row
-                    double[] temp = new double[M.getColEff()];
-                    for(int j = 0; j < M.getColEff(); j++){
-                        temp[j] = M.getElmt(idxRow, j);
-                    }
-                    for(int j = 0; j < M.getColEff(); j++){
-                        M.setElmt(idxRow, j, M.getElmt(tempRow, j));
-                        M.setElmt(tempRow, j, temp[j]);
-                    }
-                    isZero = false;
-                }
-            }
-            
-            if(!isZero){
-                double factor = M.getElmt(idxRow, k);
-                for(int j = k; j < M.getColEff(); j++){
-                    M.setElmt(idxRow, j, M.getElmt(idxRow, j)/factor);
-                }
-                
-                for(int i = 0; i < M.getRowEff(); i++){
-                    if(M.getElmt(i, k) != 0 && i != idxRow){
-                        double diff = M.getElmt(i, k);
-                        for(int j = k; j < M.getColEff(); j++){
-                            M.setElmt(i, j, M.getElmt(i, j) - (M.getElmt(idxRow, j) * diff));
+    public Matrix EselonBarisTereduksi(Matrix M){
+        M = EselonBaris(M);
+        for(int i = M.getRowEff()-1; i >= 0; i--){
+            for(int j = 0; j < M.getColEff()-1; j++){
+                if(M.getElmt(i, j) == 1){
+                    for(int k = i-1; k >= 0; k--){
+                        double diff = M.getElmt(k, j);
+                        for(int l = j; l < M.getColEff(); l++){
+                            M.setElmt(k, l, M.getElmt(k, l) - (M.getElmt(i, l) * diff));
                         }
                     }
-                }
-                idxRow++;
-            }
-        }
-        // Check no solution
-        for(int i = 0; i < M.getRowEff(); i++){
-            boolean allZero = true;
-            for(int j = 0; j < M.getColEff() - 1; j++){
-                if(M.getElmt(i, j) != 0) {
-                    allZero = false;
+                    break;
                 }
             }
-            if(allZero && M.getElmt(i, M.getColEff()-1) != 0){
-                System.out.println("Solusi tidak ada.");
-                return;
-            }
         }
-        // Backward substitution (Single solution)
-        double[] x = new double[M.getRowEff()];
-        for(int i = M.getRowEff()-1; i >= 0; i--){
-            x[i] = M.getElmt(i, M.getRowEff());
-        }
-        // Solusi parametrik??
-    }
-    public static double[] InversMatrix(Matrix M){
-        // Kasus normal row == col (Lacukan pengecekan di driver!)
-        Matrix A = new Matrix(M.getRowEff(), M.getRowEff());
-        Matrix B = new Matrix(M.getRowEff(), 1);
-        for(int i=0;i<M.getRowEff();i++){
-            for(int j=0;j<M.getColEff();j++){
-                if(j==M.getRowEff()) B.setElmt(i, 0, M.getElmt(i, j));
-                else A.setElmt(i, j, M.getElmt(i, j));
-            }
-        }
-        A = BalikanAdjoin.Balikan(A);
-        Matrix res = new Matrix(M.getRowEff(), 1);
-        for(int i = 0; i < A.getRowEff(); i++){
-            res.setElmt(i, 0, 0);
-            for(int k = 0; k < A.getColEff(); k++){
-                res.setElmt(i, 0, res.getElmt(i, 0)+A.getElmt(i, k)*B.getElmt(k, 0));
-            }
-        }
-        double[] x = new double[A.getRowEff()];
-        for(int i = 0; i < A.getRowEff(); i++){
-            x[i] = res.getElmt(i, 0);
-        }
-        return x;
+        return M;
     }
 }
