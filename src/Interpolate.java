@@ -81,7 +81,7 @@ public class Interpolate {
             ans += cur * a[i];
             cur *= X;
         }
-        System.out.printf("Luaran untuk interpolasi adalah f(x) = ");
+        System.out.printf("f(x) = ");
         for(int i = n-1; i >= 0; i--){
             if(i == n-1){
                 if(a[i] < 0) System.out.printf("-%fx^%d", Math.abs(a[i]), i);
