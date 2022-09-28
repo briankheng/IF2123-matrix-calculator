@@ -15,6 +15,7 @@ public class Interpolate {
         int n = 0;
         double[]x = new double[1001];
         double[]y = new double[1001];
+        double X = -1;
         System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\n");
         int choice = sc.nextInt();
         while(choice != 1 && choice != 2){
@@ -29,6 +30,8 @@ public class Interpolate {
                 x[i] = sc.nextDouble();
                 y[i] = sc.nextDouble();
             }
+            System.out.printf("Masukkan nilai x yang akan ditaksir nilai fungsinya: ");
+            X = sc.nextDouble();
         }
         else{
             Boolean found = false;
@@ -44,11 +47,20 @@ public class Interpolate {
                 }
                 try{
                     Scanner file = new Scanner(new File("../test/"+fileName));
-                    while(file.hasNextDouble()){
-                        x[n] = file.nextDouble();
-                        y[n] = file.nextDouble();
+                    while(file.hasNextLine()){
+                        file.nextLine();
                         n++;
                     }
+                    n--;
+                    file.close();
+                    
+                    file = new Scanner(new File("../test/"+fileName));
+                    for(int i = 0; i < n; i++){
+                        x[i] = file.nextDouble();
+                        y[i] = file.nextDouble();
+                    }
+                    X = file.nextDouble();
+                    file.close();
                 }
                 catch(FileNotFoundException err){
                     err.printStackTrace();
@@ -74,8 +86,6 @@ public class Interpolate {
         double[] a = solution.x;
         
         // Input nilai X dan output f(X)
-        System.out.printf("Masukkan nilai x yang akan ditaksir nilai fungsinya: ");
-        double X = sc.nextDouble();
         double cur = 1, ans = 0;
         for(int i = 0; i < n; i++){
             ans += cur * a[i];
