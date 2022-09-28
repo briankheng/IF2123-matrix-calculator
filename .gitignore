@@ -7,3 +7,4 @@ src/lib/Kofaktor.class
 src/lib/Cramer.class
 src/lib/MLR.class
 src/Interpolate.class
+src/Bicubic.class
