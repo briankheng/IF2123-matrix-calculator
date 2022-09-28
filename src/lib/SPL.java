@@ -231,7 +231,7 @@ public class SPL {
     
     public void InversMatrix(Matrix M){
         if(M.getRowEff() != M.getColEff()-1 || Determinant.DetCofactor(M) == 0){
-            this.ans[0] = "Tidak dapat menggunakan metode matriks balikan!";
+            this.ans[0] = "Tidak dapat menggunakan metode matriks balikan!\n";
             this.nEff = 1;
             return;
         }
