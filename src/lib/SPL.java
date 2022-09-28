@@ -160,7 +160,39 @@ public class SPL {
         }
         else{
             // Many solution
-
+            boolean[] visited = new boolean[M.getColEff()-1];
+            char[] parametric = new char[M.getColEff()-1];
+            Integer cur = 0;
+            this.nEff = M.getColEff()-1;
+            for(int i = 0; i < M.getColEff()-1; i++) visited[i] = false;
+            for(int i = 0; i < M.getRowEff(); i++){
+                for(int j = i; j < M.getColEff()-1; j++){
+                    if(M.getElmt(i, j) == 1){
+                        visited[j] = true;
+                        String temp = Double.toString(M.getElmt(i, M.getColEff()-1));
+                        for(int k = j+1; k < M.getColEff()-1; k++){
+                            if(Math.abs(M.getElmt(i, k)) > 1e-8){
+                                if(!visited[k]){
+                                    visited[k] = true;
+                                    parametric[k] = (char)(97+cur++);
+                                    this.ans[k] = "X"+Integer.toString(k+1)+" = "+Character.toString(parametric[k])+"\n";
+                                }
+                                if(M.getElmt(i, k) > 0) temp += " - " + Double.toString(Math.abs(M.getElmt(i, k))) + Character.toString(parametric[k]);
+                                else temp += " + " + Double.toString(Math.abs(M.getElmt(i, k))) + Character.toString(parametric[k]);
+                            }
+                        }
+                        this.ans[j] = "X"+Integer.toString(j+1)+" = "+temp+"\n";
+                        break;
+                    }
+                    else{
+                        if(!visited[j]){
+                            visited[j] = true;
+                            parametric[j] = (char)(97+cur++);
+                            this.ans[j] = "X"+Integer.toString(j+1)+" = "+Character.toString(parametric[j])+"\n";
+                        }
+                    }
+                }
+            }
         }
     }
     
