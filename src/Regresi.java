@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Regresi {
+
     public static void SolveRegression(){
         // Menerima input dari user
         Scanner sc = new Scanner(System.in);
@@ -75,7 +76,100 @@ public class Regresi {
             }
             
         }
-        MLR.Solve(M);
-        
+
+        //Fungsi Regresi
+        int i,j,k;
+        int pass;
+        double temp,sum;
+        double res;
+        int nRow=M.getRowEff();
+        int nCol=M.getColEff();
+
+        Matrix MUse = new Matrix(nRow, nRow+1);
+        i=0;
+        for(j=0;j<nRow+1;j++){
+            if(j==0)MUse.setElmt(i, j, nCol);
+            else{
+                sum=0;
+                for(k=0;k<nCol;k++){
+                    temp=M.getElmt(j-1, k);
+                    sum+=temp;
+                }
+                MUse.setElmt(i, j, sum);
+            }
+        }
+
+        for(i=1;i<nRow;i++){
+            for(j=0;j<nRow+1;j++){
+                if(j==0){
+                    sum=0;
+                    for(k=0;k<nCol;k++){
+                        temp=M.getElmt(i-1, k);
+                        sum+=temp;
+                    }
+                    MUse.setElmt(i, j, sum);
+                }
+                else{
+                    sum=0;
+                    for(k=0;k<nCol;k++){
+                        temp=M.getElmt(i-1, k) * M.getElmt(j-1, k);
+                        sum+=temp;
+                    }
+                    MUse.setElmt(i, j, sum);
+                }
+
+            }
+
+        }
+        MUse.printMatrix();
+        SPL solution = new SPL();
+        solution.GaussJordan(MUse);
+        double[] a = solution.x;
+        String save;
+        System.out.printf("Persamaannya adalah \n ");
+        System.out.printf("y =");
+        for(i=0;i<solution.nEff;i++){
+            save=" ";
+            if(i!=0&&solution.x[i]>0)save+="+";
+            save+=Double.toString(solution.x[i]);
+            save+=" x" + Integer.toString(i+1);
+            System.out.printf(save);
+        }
+        System.out.printf("\n");
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        choice = sc.nextInt();
+        while(choice != 1 && choice != 2){
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            choice = sc.nextInt();
+        }
+        if(choice == 1){
+            String fileName = "";
+            System.out.printf("Masukkan nama file: ");
+            try{
+                fileName = scFile.readLine();
+            }
+            catch(IOException err){
+                err.printStackTrace();
+            }
+            try{
+                FileWriter file = new FileWriter("../test/"+fileName);
+                file.write("Luaran untuk Regresi adalah y = ");
+
+                for(i=0;i<solution.nEff;i++){
+                    save=" ";
+                    if(i!=0&&solution.x[i]>0)save+="+";
+                    save+=Double.toString(solution.x[i]);
+                    save+=" x" + Integer.toString(i+1);
+                    file.write(save);
+                }
+                
+                file.write("\n");
+                file.close();
+            }
+            catch(IOException err){
+                err.printStackTrace();
+            }
+        }
+
     }
 }
