@@ -2,7 +2,7 @@ src/Main.class
 src/lib/Determinant.class
 src/lib/Matrix.class
 src/lib/SPL.class
-src/lib/BalikanAdjoin.class
+src/lib/Balikan.class
 src/lib/Kofaktor.class
 src/lib/Cramer.class
 src/lib/MLR.class
