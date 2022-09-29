@@ -115,25 +115,27 @@ public class Bicubic
 		// Simpan jawaban dalam file
         System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
         int choice = sc.nextInt();
-        while(choice != 1 && choice != 2){
+        while (choice != 1 && choice != 2)
+        {
             System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
             choice = sc.nextInt();
         }
-        if(choice == 1){
+        if (choice == 1)
+        {
             String fileName = "";
             System.out.printf("Masukkan nama file: ");
-            try{
+            try {
                 fileName = scFile.readLine();
             }
-            catch(IOException err){
+            catch (IOException err) {
                 err.printStackTrace();
             }
-            try{
+            try {
                 FileWriter file = new FileWriter("../test/"+fileName);
                 file.write("f(" + Double.toString(a) + "," + Double.toString(b) + ") = " + Double.toString(value) + "\n");
                 file.close();
             }
-            catch(IOException err){
+            catch (IOException err) {
                 err.printStackTrace();
             }
         }
