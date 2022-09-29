@@ -23,7 +23,9 @@ public class Main {
             SPL.DriverSPL();
         }
         else if(choice == 2){}
-        else if(choice == 3){}
+        else if(choice == 3){
+            Balikan.DriverBalikan();
+        }
         else if(choice == 4){
             Interpolate.SolveInterpolate();
         }
