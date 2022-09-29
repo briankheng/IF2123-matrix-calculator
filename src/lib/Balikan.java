@@ -1,0 +1,213 @@
+package lib;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+public class Balikan
+{
+	public static boolean isInversExist = true;
+
+	public static void DriverBalikan()
+	{
+		Scanner sc = new Scanner(System.in);
+        BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("PILIHAN\n1. Metode matriks adjoin\n2. Metode eliminasi Gauss-Jordan");
+        Integer choice = sc.nextInt();
+        while(choice < 1 || choice > 2){
+            System.out.println("Masukan tidak valid! Silakan ulangi...");
+            choice = sc.nextInt();
+        }
+
+        Matrix matrix = Matrix.inputMatrix();
+        while ((matrix.getRowEff() != matrix.getColEff()) || (matrix.getRowEff() == 1 && matrix.getColEff() == 1))
+        {
+        	if (matrix.getRowEff() != matrix.getColEff())
+	        	System.out.println("Matriks harus berbentuk persegi! Silahkan ulangi...");
+	        if (matrix.getRowEff() == 1 && matrix.getColEff() == 1)
+	        	System.out.println("Matriks tidak boleh berukuran 1! Silahkan ulangi...");
+
+        	matrix = Matrix.inputMatrix();
+        }
+
+        if(choice == 1)
+            matrix = BalikanAdjoin(matrix);
+        else 
+        	matrix = BalikanGaussJordan(matrix);
+
+        if (!isInversExist)
+        {
+        	System.out.println("Matriks tidak memiliki invers!");
+        }
+        else
+        {
+        	// Cetak invers dari matriks
+	        System.out.println("Invers dari matriks input adalah: ");
+	        matrix.printMatrix();
+
+        	// Simpan jawaban dalam file
+        	System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+	        choice = sc.nextInt();
+	        while (choice != 1 && choice != 2)
+	        {
+	            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+	            choice = sc.nextInt();
+	        }
+	        if (choice == 1) {
+	            String fileName = "";
+	            System.out.printf("Masukkan nama file: ");
+	            try {
+	                fileName = scFile.readLine();
+	            }
+	            catch (IOException err) {
+	                err.printStackTrace();
+	            }
+	            try {
+	                FileWriter file = new FileWriter("../test/"+fileName);
+	                
+					for (int i = 0; i < matrix.getRowEff(); i++)
+					{
+						for (int j = 0; j < matrix.getColEff()-1; j++)
+						{
+							file.write(matrix.getElmt(i,j) + " ");
+						}
+						file.write(matrix.getElmt(i,matrix.getColEff()-1) + "\n");
+					}
+	                
+	                file.close();
+	            }
+	            catch (IOException err) {
+	                err.printStackTrace();
+	            }
+	        }
+        }
+	}
+
+	public static Matrix swapRow(Matrix matrix, int n, int m)
+	{
+		double temp;
+		for (int i = 0; i < matrix.getColEff(); i++)
+		{
+			temp = matrix.getElmt(n,i);
+			matrix.setElmt(n,i,matrix.getElmt(m,i));
+			matrix.setElmt(m,i,temp);
+		}
+
+		return matrix;
+	}
+
+	public static Matrix Adjoin(Matrix matrix)
+	/* Matriks harus berbentuk persegi */
+	/* Input berupa matrix biasa */
+	/* Output berupa matrix adjoin */
+	{
+		int size = matrix.getRowEff();
+
+		Matrix kofaktor = Kofaktor.Kofaktor(matrix);
+		Matrix transpose = new Matrix(size,size);
+
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				transpose.setElmt(i,j,kofaktor.getElmt(j,i));
+
+		return transpose;
+	}
+
+	public static Matrix BalikanAdjoin(Matrix matrix)
+	/* Matriks harus berbentuk persegi */
+	/* Input berupa matrix biasa */
+	/* Output berupa invers matrix */
+	{
+		int size = matrix.getRowEff();
+
+		Matrix matrixAdjoin = Adjoin(matrix);
+		double determinan = Determinant.DetOBE(matrix);
+
+		if (determinan == 0 || Double.isNaN(determinan))
+		{
+			isInversExist = false;
+			return matrix;
+		}
+
+		for (int i = 0; i < size; i++)
+			for (int j = 0; j < size; j++)
+				matrixAdjoin.setElmt(i,j,matrixAdjoin.getElmt(i,j)/determinan);
+
+		return matrixAdjoin;
+	}
+
+	public static Matrix BalikanGaussJordan(Matrix matrix)
+	/* Matriks harus berbentuk persegi */
+	/* Input berupa matrix biasa */
+	/* Output berupa invers matrix */
+	{
+		Matrix invers = new Matrix(matrix.getRowEff(), matrix.getColEff()*2);
+
+		for (int i = 0; i < matrix.getRowEff(); i++)
+		{
+			for (int j = 0; j < matrix.getColEff(); j++)
+			{
+				if (i == j)
+					invers.setElmt(i,j+matrix.getColEff(),1);
+				invers.setElmt(i,j,matrix.getElmt(i,j));
+			}
+		}
+
+		for (int i = 0; i < invers.getRowEff(); i++)
+		{
+			for (int j = 0; j < invers.getRowEff(); j++)
+			{
+				if (i == j)
+					continue;
+
+				int k = i+1;
+				if (invers.getElmt(i,i) == 0)
+				{
+					isInversExist = false;
+					while (k < invers.getRowEff())
+					{
+						if (invers.getElmt(k,i) != 0)
+						{
+							invers = swapRow(invers, i, k);
+							isInversExist = true;
+						}
+						k++;
+					}
+				}
+
+				if (!isInversExist)
+					return matrix;
+
+				double sub = -1*invers.getElmt(j,i)/invers.getElmt(i,i);
+				for (k = i; k < invers.getColEff(); k++)
+					invers.setElmt(j,k,invers.getElmt(j,k)+sub*invers.getElmt(i,k));
+			}
+		}
+
+		for (int i = 0; i < invers.getRowEff(); i++)
+		{
+			double div = invers.getElmt(i,i);
+			for (int j = 0; j < invers.getColEff(); j++)
+			{
+				if (invers.getElmt(i,j) == 0)
+					continue;
+				invers.setElmt(i,j,invers.getElmt(i,j)/div);
+			}
+		}
+
+		for (int i = 0; i < matrix.getRowEff(); i++)
+		{
+			for (int j = 0; j < matrix.getColEff(); j++)
+			{
+				matrix.setElmt(i,j,invers.getElmt(i,j+matrix.getColEff()));
+			}
+		}
+
+		return matrix;
+	}
+}

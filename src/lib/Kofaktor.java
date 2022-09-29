@@ -1,7 +1,5 @@
 package lib;
 
-import java.util.*;
-
 public class Kofaktor 
 {
 	public static double findDetKofaktor(Matrix matrixKofaktor, int row, int col)
@@ -61,7 +59,7 @@ public class Kofaktor
 			for (int j = 0; j < size; j++)
 			{
 				matrixKofaktor.setElmt(i,j,findDetKofaktor(matrix,i,j));
-				if ((i+j)%2 == 1)
+				if ((i+j)%2 == 1 && matrixKofaktor.getElmt(i,j) != 0)
 					matrixKofaktor.setElmt(i,j,matrixKofaktor.getElmt(i,j)*-1);
 			}
 		}
