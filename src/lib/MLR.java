@@ -47,7 +47,9 @@ public class MLR {
 
         }
         MUse.printMatrix();
-        Cramer.Solve(MUse);
+        SPL solution = new SPL();
+        solution.GaussJordan(MUse);
+        double[] a = solution.x;
 
     }
 

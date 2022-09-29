@@ -39,6 +39,7 @@ public class SPL {
             solution.InversMatrix(M);
         }
         else{
+            solution.Cramer(M);
             // Kaidah Cramer
         }
         for(int i = 0; i < solution.nEff; i++){
@@ -192,6 +193,50 @@ public class SPL {
             this.ans[i] = "X"+Integer.toString(i+1)+" = "+Double.toString(this.x[i])+"\n";
         }
         this.nEff = res.getRowEff();
+    }
+
+    public void Cramer(Matrix M){
+        if(M.getRowEff() != M.getColEff()-1 || Determinant.DetCofactor(M) == 0){
+            this.ans[0] = "Tidak dapat menggunakan metode matriks balikan!\n";
+            this.nEff = 1;
+            return;
+        }
+        
+        int i,j,k;
+        int pass;
+        double temp,factor;
+        double res;
+        int nRow=M.getRowEff();
+
+        Matrix MUse = new Matrix(nRow, nRow);
+        for(i=0;i<nRow;i++){
+            for(j=0;j<nRow;j++){
+                temp=M.getElmt(i, j);
+                MUse.setElmt(i, j, temp);
+            }
+        }
+
+        double det;
+        double xdet;
+        det=Determinant.DetCofactor(MUse);
+        for(j=0;j<nRow;j++){
+            
+            for(i=0;i<nRow;i++){
+                temp=M.getElmt(i, nRow);
+                MUse.setElmt(i, j, temp);
+            }
+            xdet=Determinant.DetCofactor(MUse);
+            res=xdet/det;
+            this.x[j] = res;
+            this.ans[j] = "X"+Integer.toString(j+1)+" = "+Double.toString(this.x[j])+"\n";
+            //reverse change
+            for(i=0;i<nRow;i++){
+                temp=M.getElmt(i, j);
+                MUse.setElmt(i, j, temp);
+            }
+
+        }
+        this.nEff=nRow;
     }
 
     /* Fungsi */
