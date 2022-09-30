@@ -41,7 +41,7 @@ public class Determinant{
         // Cetak invers dari matriks
 	    System.out.println("Determinan dari matriks input adalah: ");
         String st=Double.toString(det);
-	    System.out.printf(st);
+	    System.out.println(st);
 
         // Simpan jawaban dalam file
         System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
@@ -75,7 +75,6 @@ public class Determinant{
 	}
 
     public static double DetOBE(Matrix M){
-        //to add later : saat perlu swap
 
         int i,j,im,jm,k;
         int pass;
@@ -90,8 +89,27 @@ public class Determinant{
                 M2.setElmt(i, j, temp);
             }
         }
-
+        int swap=1;
+        double diag,cdt;
         for(i=0;i<nRow-1;i++){
+            diag = M2.getElmt(i, i);
+            if(diag==0){
+                for(j=i+1;j<nRow;j++){
+                    cdt=M2.getElmt(j, i);
+                    if(cdt!=0){
+
+                        for(k=0;k<nRow;k++){
+                            temp=M2.getElmt(i, k);
+                            M2.setElmt(i, k, M2.getElmt(j, k));
+                            M2.setElmt(j, k, temp);
+                        }
+
+                        swap*=-1;
+                        break;
+                    }
+                }
+            }
+
             for(j=i+1;j<nRow;j++){
                 factor=M2.getElmt(j, i)/M2.getElmt(i, i);
                 factor*=-1;
@@ -104,6 +122,7 @@ public class Determinant{
         }
 
         res=1;
+        res*=swap;
         for(i=0;i<nRow;i++){
             res*=M2.getElmt(i, i);
         }
