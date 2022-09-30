@@ -128,7 +128,7 @@ public class Regresi {
         String save;
         System.out.printf("Persamaannya adalah \n ");
         System.out.printf("y =");
-        for(i=0;i<solution.nEff;i++){
+        for(i=0;i<solution.nEff-1;i++){
             save=" ";
             if(i!=0&&solution.x[i]>0)save+="+";
             save+=Double.toString(solution.x[i]);
@@ -155,7 +155,7 @@ public class Regresi {
                 FileWriter file = new FileWriter("../test/"+fileName);
                 file.write("Luaran untuk Regresi adalah y = ");
 
-                for(i=0;i<solution.nEff;i++){
+                for(i=0;i<solution.nEff-1;i++){
                     save=" ";
                     if(i!=0&&solution.x[i]>0)save+="+";
                     save+=Double.toString(solution.x[i]);
