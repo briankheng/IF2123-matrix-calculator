@@ -20,7 +20,9 @@ public class Main {
         if(choice == 1){
             SPL.DriverSPL();
         }
-        else if(choice == 2){}
+        else if(choice == 2){
+            Determinant.DriverDeterminan();
+        }
         else if(choice == 3){
             Balikan.DriverBalikan();
         }

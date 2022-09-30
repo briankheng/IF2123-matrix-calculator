@@ -2,7 +2,77 @@ package lib;
 
 import java.util.*;
 
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
+import javax.swing.DefaultRowSorter;
+
 public class Determinant{
+
+    public static void DriverDeterminan()
+	{
+		Scanner sc = new Scanner(System.in);
+        BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("PILIHAN\n1. Metode determinan dengan OBE\n2. Metode determinan dengan kofaktor");
+        Integer choice = sc.nextInt();
+        while(choice < 1 || choice > 2){
+            System.out.println("Masukan tidak valid! Silakan ulangi...");
+            choice = sc.nextInt();
+        }
+
+        Matrix matrix = Matrix.inputMatrix();
+        while ((matrix.getRowEff() != matrix.getColEff()))
+        {
+        	if (matrix.getRowEff() != matrix.getColEff())
+	        	System.out.println("Matriks harus berbentuk persegi! Silahkan ulangi...");
+        	matrix = Matrix.inputMatrix();
+        }
+        double det;
+        if(choice == 1)
+            det = DetOBE(matrix);
+        else 
+        	det = DetCofactor(matrix);
+
+        
+        // Cetak invers dari matriks
+	    System.out.println("Determinan dari matriks input adalah: ");
+        String st=Double.toString(det);
+	    System.out.printf(st);
+
+        // Simpan jawaban dalam file
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+	    choice = sc.nextInt();
+	    while (choice != 1 && choice != 2)
+	    {
+	        System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+	        choice = sc.nextInt();
+	    }
+	        if (choice == 1) {
+	            String fileName = "";
+	            System.out.printf("Masukkan nama file: ");
+	            try {
+	                fileName = scFile.readLine();
+	            }
+	            catch (IOException err) {
+	                err.printStackTrace();
+	            }
+	            try {
+	                FileWriter file = new FileWriter("../test/"+fileName);
+	                
+                    file.write(st);
+	                
+	                file.close();
+	            }
+	            catch (IOException err) {
+	                err.printStackTrace();
+	            }
+	        }
+        
+	}
 
     public static double DetOBE(Matrix M){
         //to add later : saat perlu swap

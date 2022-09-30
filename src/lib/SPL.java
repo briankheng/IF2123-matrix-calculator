@@ -206,7 +206,7 @@ public class SPL {
 
     public void Cramer(Matrix M){
         if(M.getRowEff() != M.getColEff()-1 || Determinant.DetCofactor(M) == 0){
-            this.ans[0] = "Tidak dapat menggunakan metode matriks balikan!\n";
+            this.ans[0] = "Tidak dapat menggunakan metode Cramer!\n";
             this.nEff = 1;
             return;
         }
