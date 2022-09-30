@@ -40,7 +40,6 @@ public class SPL {
         }
         else{
             solution.Cramer(M);
-            // Kaidah Cramer
         }
         for(int i = 0; i < solution.nEff; i++){
             System.out.printf(solution.ans[i]);
@@ -206,7 +205,7 @@ public class SPL {
 
     public void Cramer(Matrix M){
         if(M.getRowEff() != M.getColEff()-1 || Determinant.DetCofactor(M) == 0){
-            this.ans[0] = "Tidak dapat menggunakan metode Cramer!\n";
+            this.ans[0] = "Matriks tidak persegi, tidak dapat menggunakan metode Cramer!\n";
             this.nEff = 1;
             return;
         }
@@ -228,6 +227,11 @@ public class SPL {
         double det;
         double xdet;
         det=Determinant.DetCofactor(MUse);
+        if(det==0){
+            this.ans[0] = "Determinan 0, tidak dapat menggunakan metode Cramer!\n";
+            this.nEff = 1;
+            return;
+        }
         for(j=0;j<nRow;j++){
             
             for(i=0;i<nRow;i++){
