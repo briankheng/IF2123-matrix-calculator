@@ -161,15 +161,6 @@ public class SPL {
             // Many solution
             SolveManySolution(M);
         }
-
-        for (int i = 0; i < M.getRowEff(); i++)
-        {
-            for (int j = 0; j < M.getColEff(); j++)
-            {
-                System.out.printf(M.getElmt(i,j) + " ");
-            }
-            System.out.printf("\n");
-        }
     }
     
     public void InversMatrix(Matrix M){

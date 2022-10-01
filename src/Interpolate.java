@@ -129,7 +129,7 @@ public class Interpolate {
             }
             try{
                 FileWriter file = new FileWriter("../test/"+fileName);
-                file.write("Luaran untuk interpolasi adalah f(x) = ");
+                file.write("f(x) = ");
                 for(int i= n-1;i >= 0; i--){
                     if(i == n-1){
                         if(a[i] < 0) file.write("-"+Double.toString(Math.abs(a[i]))+"x^"+Integer.toString(i));
