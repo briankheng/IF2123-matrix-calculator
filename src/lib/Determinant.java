@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 public class Determinant{
     public static void DriverDeterminan(){
@@ -18,7 +20,68 @@ public class Determinant{
             choice = sc.nextInt();
         }
 
-        Matrix matrix = Matrix.inputMatrix();
+        Matrix M = new Matrix(0, 0);
+        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\n");
+        int ichoice = sc.nextInt();
+        while(ichoice != 1 && ichoice != 2){
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            ichoice = sc.nextInt();
+        }
+        if(ichoice == 1){
+            System.out.printf("Masukkan panjang matriks persegi: \n");
+            Integer n = sc.nextInt();
+            System.out.printf("Masukkan matriks: \n");
+            Matrix tempMatrix = new Matrix(n, n);
+            for(int i = 0; i < n; i++){
+                for(int j = 0; j < n; j++){
+                    double x = sc.nextDouble();
+                    tempMatrix.setElmt(i, j, x);
+                }
+            }
+            M = tempMatrix;
+        }
+        else{
+            Boolean found = false;
+            while(!found){
+                found = true;
+                String fileName = "";
+                System.out.printf("Masukkan nama file: ");
+                try{
+                    fileName = scFile.readLine();
+                }
+                catch(IOException err){
+                    err.printStackTrace();
+                }
+                try{
+                    Scanner file = new Scanner(new File("../test/"+fileName));
+                    Integer n = 0, m = 0;
+                    while(file.hasNextLine()){
+                        n++;
+                        m = file.nextLine().split(" ").length;
+                    }
+                    file.close();
+
+                    Matrix tempMatrix = new Matrix(n, m);
+                    file = new Scanner(new File("../test/"+fileName));
+                    for(int i = 0; i < n; i++){
+                        for(int j = 0; j < m; j++){
+                            double x = file.nextDouble();
+                            tempMatrix.setElmt(i, j, x);
+                        }
+                    }
+                    file.close();
+
+                    M = tempMatrix;
+                }
+                catch(FileNotFoundException err){
+                    err.printStackTrace();
+                    found = false;
+                }
+            }
+        }
+
+        Matrix matrix = M;
+        
         while ((matrix.getRowEff() != matrix.getColEff()))
         {
         	if (matrix.getRowEff() != matrix.getColEff())
