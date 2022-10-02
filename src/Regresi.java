@@ -8,7 +8,8 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Regresi {
-    public static void SolveRegression(){
+    public static void SolveRegression()
+    {
         // Menerima input dari user
         Scanner sc = new Scanner(System.in);
         BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
@@ -18,7 +19,7 @@ public class Regresi {
         Matrix M = new Matrix(100,100);
         Matrix MTarget = new Matrix(1,100);
         System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\n");
-        int choice = sc.nextInt();
+        int choice = sc.nextInt(); 
         while(choice != 1 && choice != 2){
             System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
             choice = sc.nextInt();
@@ -33,12 +34,17 @@ public class Regresi {
             Matrix Minput = new Matrix(1, n);
             System.out.printf("Masukkan titik-titik x dan y, dengan urutan x1,x2,..,xn,y:\n");
             for(int j = 0; j < m; j++){
+                String numm;
+                numm = Integer.toString(j+1);
+                System.out.printf("Masukkan titik-titik ke-");
+                System.out.printf(numm);
+                System.out.printf("\n");
                 for(int i = 0; i < n+1; i++){
                     x = sc.nextDouble();
                     MData.setElmt(i, j, x);
                 }
             }
-            System.out.printf("Masukkan titik-titik x yang ingin dihampiri, dengan urutan x1,x2,..,xn:\n");
+            System.out.printf("Masukkan nilai dari data yang ingin dihampiri, dengan urutan x1,x2,..,xn:\n");
             for(int i = 0; i < n; i++){
                 x = sc.nextDouble();
                 Minput.setElmt(0, i, x);
@@ -70,18 +76,13 @@ public class Regresi {
                         }
                     }
                     n--;
-                    int swap=n;
-                    n=m;
-                    m=swap;
+                    int swap = n;
+                    n = m;
+                    m = swap;
                     file.close();
 
                     Matrix MData = new Matrix(n, m);
                     Matrix Minput= new Matrix(1, n);
-
-                    /* debug
-                    String estkse=Integer.toString(m);
-                    System.out.println(estkse);
-                    */
 
                     file = new Scanner(new File("../test/"+fileName));
                     for(int i = 0; i < m; i++){
@@ -110,55 +111,17 @@ public class Regresi {
                 }
             }
         }
-        /* keeping this as reference
-        else{
-            Boolean found = false;
-            while(!found){
-                found = true;
-                String fileName = "";
-                System.out.printf("Masukkan nama file: ");
-                try{
-                    fileName = scFile.readLine();
-                }
-                catch(IOException err){
-                    err.printStackTrace();
-                }
-                try{
-                    Scanner file = new Scanner(new File("../test/"+fileName));
-                    n = file.nextInt();
-                    m = file.nextInt();
-                    Matrix MData = new Matrix(n+1, m);
-                    Matrix Minput= new Matrix(1, n);
-                    for(int i = 0; i < n+1; i++){
-                        for(int j = 0; j < m; j++){
-                            x = file.nextDouble();
-                            MData.setElmt(i, j, x);
-                        }
-                    }
-                    for(int i = 0; i < n; i++){
-                        x = file.nextDouble();
-                        Minput.setElmt(0, i, x);
-
-                    }
-                    M = MData;
-                    MTarget = Minput;
-                }
-                catch(FileNotFoundException err){
-                    err.printStackTrace();
-                    found = false;
-                }
-            }
-            
-        }
-        */
+        
         // Fungsi Regresi
-        int i, j, k, nRow=M.getRowEff(), nCol=M.getColEff();
+        int i, j, k, nRow = M.getRowEff(), nCol=M.getColEff();
         double temp, sum;
 
         Matrix MUse = new Matrix(nRow, nRow+1);
         i = 0;
         for(j = 0; j < nRow+1; j++){
-            if(j == 0) MUse.setElmt(i, j, nCol);
+            if(j == 0){
+                MUse.setElmt(i, j, nCol);
+            } 
             else{
                 sum = 0;
                 for(k = 0; k < nCol; k++){
@@ -198,15 +161,21 @@ public class Regresi {
         
         for(i = 0; i < solution.nEff; i++){
             curr = solution.x[i];
-            if(i != 0) curr *= MTarget.getElmt(0, i-1);
+            if(i != 0){
+                curr *= MTarget.getElmt(0, i-1);
+            } 
             ysub += curr;
         }
 
         for(i = 0; i < solution.nEff; i++){
             save = " ";
-            if(i != 0 && solution.x[i] >= 0) save += "+";
+            if(i != 0 && solution.x[i] >= 0){
+                save += "+";
+            } 
             save += Double.toString(solution.x[i]);
-            if(i != 0) save += " x" + Integer.toString(i);
+            if(i != 0){
+                save += " x" + Integer.toString(i);
+            } 
             System.out.printf(save);
         }
         System.out.printf("\nHampiran nilai y-nya adalah y=");
@@ -231,13 +200,18 @@ public class Regresi {
             }
             try{
                 FileWriter file = new FileWriter("../test/"+fileName);
-                file.write("Luaran untuk Regresi adalah y = ");
+                file.write("Persamaan luaran untuk Regresi adalah y = ");
 
                 for(i = 0; i < solution.nEff; i++){
                     save = " ";
-                    if(i != 0 && solution.x[i] > 0) save += "+";
+                    if(i != 0 && solution.x[i] > 0){
+                        save += "+";
+                    } 
+
                     save += Double.toString(solution.x[i]);
-                    if(i != 0) save += " x" + Integer.toString(i);
+                    if(i != 0){
+                        save += " x" + Integer.toString(i);
+                    } 
                     file.write(save);
                 }
             
