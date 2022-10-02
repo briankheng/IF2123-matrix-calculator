@@ -196,51 +196,38 @@ public class SPL {
 
     public void Cramer(Matrix M){
         if(M.getRowEff() != M.getColEff()-1 || Determinant.DetCofactor(M) == 0){
-            this.ans[0] = "Matriks tidak persegi, tidak dapat menggunakan metode Cramer!\n";
+            this.ans[0] = "Tidak dapat menggunakan kaidah cramer!\n";
             this.nEff = 1;
             return;
         }
         
-        int i,j,k;
-        int pass;
-        double temp,factor;
-        double res;
-        int nRow=M.getRowEff();
+        int i, j, nRow = M.getRowEff();
+        double temp, res, det, xdet;
 
         Matrix MUse = new Matrix(nRow, nRow);
-        for(i=0;i<nRow;i++){
-            for(j=0;j<nRow;j++){
-                temp=M.getElmt(i, j);
+        for(i = 0; i < nRow; i++){
+            for(j = 0; j < nRow; j++){
+                temp = M.getElmt(i, j);
                 MUse.setElmt(i, j, temp);
             }
         }
-
-        double det;
-        double xdet;
-        det=Determinant.DetCofactor(MUse);
-        if(det==0){
-            this.ans[0] = "Determinan 0, tidak dapat menggunakan metode Cramer!\n";
-            this.nEff = 1;
-            return;
-        }
-        for(j=0;j<nRow;j++){
-            
-            for(i=0;i<nRow;i++){
-                temp=M.getElmt(i, nRow);
+        det = Determinant.DetCofactor(MUse);
+        for(j = 0; j < nRow; j++){
+            for(i = 0; i < nRow; i++){
+                temp = M.getElmt(i, nRow);
                 MUse.setElmt(i, j, temp);
             }
-            xdet=Determinant.DetCofactor(MUse);
-            res=xdet/det;
+            xdet = Determinant.DetCofactor(MUse);
+            res = xdet/det;
             this.x[j] = res;
             this.ans[j] = "X"+Integer.toString(j+1)+" = "+Double.toString(this.x[j])+"\n";
-            //reverse change
-            for(i=0;i<nRow;i++){
-                temp=M.getElmt(i, j);
+            // Reverse change
+            for(i = 0; i < nRow; i++){
+                temp = M.getElmt(i, j);
                 MUse.setElmt(i, j, temp);
             }
-
         }
-        this.nEff=nRow;
+        this.nEff = nRow;
     }
 
     /* Fungsi */

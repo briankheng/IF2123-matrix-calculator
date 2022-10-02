@@ -35,6 +35,8 @@ public class Main {
         else if(choice == 6){
             Regresi.SolveRegression();
         }
-        else{}
+        else{
+            System.out.println("Terima kasih telah menggunakan program ini!");
+        }
     }
 }

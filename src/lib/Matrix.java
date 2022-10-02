@@ -3,7 +3,6 @@ package lib;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Scanner;
@@ -49,7 +48,7 @@ public class Matrix {
             Integer n = sc.nextInt();
             System.out.printf("Masukkan banyak kolom: ");
             Integer m = sc.nextInt();
-            System.out.printf("Masukkan matriks augmented: \n");
+            System.out.printf("Masukkan matriks: \n");
             Matrix tempMatrix = new Matrix(n, m);
             for(int i = 0; i < n; i++){
                 for(int j = 0; j < m; j++){
