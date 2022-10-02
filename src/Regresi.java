@@ -8,7 +8,6 @@ import java.io.InputStreamReader;
 import java.util.Scanner;
 
 public class Regresi {
-
     public static void SolveRegression(){
         // Menerima input dari user
         Scanner sc = new Scanner(System.in);
@@ -61,6 +60,71 @@ public class Regresi {
                 }
                 try{
                     Scanner file = new Scanner(new File("../test/"+fileName));
+                    m=0;
+                    int check;
+                    while(file.hasNextLine()){
+                        n++;
+                        check= file.nextLine().split(" ").length;
+                        if(check>m){
+                            m = check;
+                        }
+                    }
+                    n--;
+                    int swap=n;
+                    n=m;
+                    m=swap;
+                    file.close();
+
+                    Matrix MData = new Matrix(n, m);
+                    Matrix Minput= new Matrix(1, n);
+
+                    /* debug
+                    String estkse=Integer.toString(m);
+                    System.out.println(estkse);
+                    */
+
+                    file = new Scanner(new File("../test/"+fileName));
+                    for(int i = 0; i < m; i++){
+                        for(int j = 0; j< n; j++){
+                            x=file.nextDouble();
+                            MData.setElmt(j, i, x);
+                        }
+                    }
+
+                    for(int i = 0; i < n-1; i++){
+                        x = file.nextDouble();
+                        Minput.setElmt(0, i, x);
+
+                    }
+
+
+                    file.close();
+                    M=MData;
+                    MTarget=Minput;
+
+                }
+                
+                catch(FileNotFoundException err){
+                    err.printStackTrace();
+                    found = false;
+                }
+            }
+        }
+        /* keeping this as reference
+        else{
+            Boolean found = false;
+            while(!found){
+                found = true;
+                String fileName = "";
+                System.out.printf("Masukkan nama file: ");
+                try{
+                    fileName = scFile.readLine();
+                }
+                catch(IOException err){
+                    err.printStackTrace();
+                }
+                try{
+                    Scanner file = new Scanner(new File("../test/"+fileName));
                     n = file.nextInt();
                     m = file.nextInt();
                     Matrix MData = new Matrix(n+1, m);
@@ -86,7 +150,7 @@ public class Regresi {
             }
             
         }
-
+        */
         // Fungsi Regresi
         int i, j, k, nRow=M.getRowEff(), nCol=M.getColEff();
         double temp, sum;
@@ -140,7 +204,7 @@ public class Regresi {
 
         for(i = 0; i < solution.nEff; i++){
             save = " ";
-            if(i != 0 && solution.x[i] > 0) save += "+";
+            if(i != 0 && solution.x[i] >= 0) save += "+";
             save += Double.toString(solution.x[i]);
             if(i != 0) save += " x" + Integer.toString(i);
             System.out.printf(save);
