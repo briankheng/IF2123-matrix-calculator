@@ -8,3 +8,4 @@ src/lib/Cramer.class
 src/lib/MLR.class
 src/Interpolate.class
 src/Bicubic.class
+src/ImageProcessing.class
