@@ -11,9 +11,10 @@ public class Main {
         System.out.println("4. Interpolasi Polinom");
         System.out.println("5. Interpolasi Bicubic");
         System.out.println("6. Regresi linier berganda");
-        System.out.println("7. Keluar");
+        System.out.println("7. Pembesaran citra dengan interpolasi bicubic");
+        System.out.println("8. Keluar");
         int choice = sc.nextInt();
-        while(choice < 1 || choice > 7){
+        while(choice < 1 || choice > 8){
             System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
             choice = sc.nextInt();
         }
@@ -34,6 +35,9 @@ public class Main {
         }
         else if(choice == 6){
             Regresi.SolveRegression();
+        }
+        else if (choice == 7){
+            ImageProcessing.ImageProcessingDriver();
         }
         else{
             System.out.println("Terima kasih telah menggunakan program ini!");
