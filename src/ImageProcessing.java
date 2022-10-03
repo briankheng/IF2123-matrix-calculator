@@ -21,7 +21,7 @@ public class ImageProcessing
 	public static Matrix xValueMatrix;
 
 	// Bicubic interpolation variables
-	public static double[][] XandYValue = { {0	,0	,0	,0	,0	,36	,0	,0	,0	,0	,0	,0	,0	,0	,0	,0},
+	public static double[][] valueXandY = { {0	,0	,0	,0	,0	,36	,0	,0	,0	,0	,0	,0	,0	,0	,0	,0},
 											{0	,0	,0	,0	,-12,-18,36	,-6	,0	,0	,0	,0	,0	,0	,0	,0},
 											{0	,0	,0	,0	,18	,-36,18	,0	,0	,0	,0	,0	,0	,0	,0	,0},
 											{0	,0	,0	,0	,-6	,18	,-18,6 	,0	,0	,0	,0	,0	,0	,0	,0},
@@ -41,7 +41,7 @@ public class ImageProcessing
 
 
 	/*****	DRIVER	*****/
-	public static void main(String[] args)
+	public static void ImageProcessingDriver()
 	{
 		// Constant values
 		// String readDir = "../test/image/TC-ImageProcessing-4.png";
@@ -231,7 +231,7 @@ public class ImageProcessing
 			constant[i] = 0;
 
 			for (int j = 0; j < 16; j++)
-				constant[i] += (XandYValue[i][j]/36) * (float)zValue[j];
+				constant[i] += (valueXandY[i][j]/36) * (float)zValue[j];
 		}
 
 		// Multiply the constant array to a^i b^j for 0<=i<=3 and 0<=j<=3
