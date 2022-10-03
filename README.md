@@ -22,6 +22,8 @@ Polynomial Interpolation is solved by creating a polynomial equation from the po
 Bicubic Interpolation is solved by an interpolation technique in 2D data that could be used for image enlargement.
 * **Solving Multiple Linear Regression** <br>
 Multiple Linear Regression is solved by making a linear equation from the points given.
+* **Scaling Image** <br>
+Scaling image using bicubic interpolation.
 
 ## Structure
 ```bash
