@@ -21,10 +21,10 @@ public class SPL {
     public static void DriverSPL(){
         Scanner sc = new Scanner(System.in);
         BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
-        System.out.printf("PILIHAN\n1. Metode eliminasi Gauss\n2. Metode eliminasi Gauss-Jordan\n3. Metode matriks balikan\n4. Kaidah Cramer\n");
+        System.out.printf("PILIHAN\n1. Metode eliminasi Gauss\n2. Metode eliminasi Gauss-Jordan\n3. Metode matriks balikan\n4. Kaidah Cramer\nPilihan: ");
         Integer choice = sc.nextInt();
         while(choice < 1 || choice > 4){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         Matrix M = Matrix.inputMatrix();
@@ -45,10 +45,10 @@ public class SPL {
             System.out.printf(solution.ans[i]);
         }
         // Simpan jawaban dalam file
-        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\nPilihan: ");
         choice = sc.nextInt();
         while(choice != 1 && choice != 2){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         if(choice == 1){

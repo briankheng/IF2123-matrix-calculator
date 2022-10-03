@@ -3,6 +3,8 @@ package lib;
 public class Kofaktor 
 {
 	public static double findDetKofaktor(Matrix matrixKofaktor, int row, int col)
+	// Input	: Matrix m, a square matrix which the cofactor determinant to be calculated; int row and col, the row and col index
+	// Output	: Double d, the value of the cofactor determinant at (row,col)
 	/* Matriks harus berbentuk persegi */
 	{
 		int size = matrixKofaktor.getRowEff();
@@ -48,7 +50,8 @@ public class Kofaktor
 	}
 
 	public static Matrix Kofaktor(Matrix matrix)
-	/* Matriks harus berbentuk persegi */
+	// Input	: Square matrix
+	// Output	: Cofactor matrix
 	{
 		int size = matrix.getRowEff();
 

@@ -13,9 +13,10 @@ public class Main {
         System.out.println("6. Regresi linier berganda");
         System.out.println("7. Pembesaran citra dengan interpolasi bicubic");
         System.out.println("8. Keluar");
+        System.out.printf("Pilihan: ");
         int choice = sc.nextInt();
         while(choice < 1 || choice > 8){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         if(choice == 1){

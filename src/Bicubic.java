@@ -68,11 +68,11 @@ public class Bicubic
 		System.out.println("f(" + a + "," + b + ") = " + value);
 
 		// Save the result into a file
-        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\nPilihan: ");
         int choice = sc.nextInt();
         while (choice != 1 && choice != 2)
         {
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         if (choice == 1)

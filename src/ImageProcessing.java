@@ -43,12 +43,6 @@ public class ImageProcessing
 	/*****	DRIVER	*****/
 	public static void ImageProcessingDriver()
 	{
-		// Constant values
-		// String readDir = "../test/image/TC-ImageProcessing-4.png";
-		// String writeDir = "../test/image/output.jpg";
-		// int heightFactor = 64;
-		// int widthFactor = 64;
-
 		Scanner sc = new Scanner(System.in);
 
 		System.out.printf("Masukkan nama file image yang ingin diperbesar: ");
@@ -64,19 +58,28 @@ public class ImageProcessing
 		int widthFactor = sc.nextInt();
 
 
-        System.out.println("PILIHAN\n1. Metode double cubic interpolation\n2. Metode bicubic interpolation");
+        System.out.printf("PILIHAN\n1. Metode double cubic interpolation\n2. Metode bicubic interpolation\nPilihan: ");
 		int choice = sc.nextInt();
 
 		while (choice < 1 | choice > 2)
 		{
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
 		}
 
 		if (choice == 1)
+		{
 			doubleCubic(readDir, writeDir, heightFactor, widthFactor);
-		else
+		}
+		else 
+		{
+			if (widthFactor != heightFactor)
+			{
+				System.out.printf("Untuk pilihan ini skala faktor harus sama. Silahkan ganti skala faktor atau gunakan pilihan lain!\n");
+				return;
+			}
 			bicubic(readDir, writeDir, heightFactor, widthFactor);
+		}
 	}
 
 

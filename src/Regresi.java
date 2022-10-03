@@ -18,10 +18,10 @@ public class Regresi {
         double x;
         Matrix M = new Matrix(100,100);
         Matrix MTarget = new Matrix(1,100);
-        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\n");
+        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\nPilihan: ");
         int choice = sc.nextInt(); 
         while(choice != 1 && choice != 2){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         
@@ -183,10 +183,10 @@ public class Regresi {
         System.out.printf(yans);
         System.out.printf("\n");
 
-        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\nPilihan: ");
         choice = sc.nextInt();
         while(choice != 1 && choice != 2){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         if(choice == 1){

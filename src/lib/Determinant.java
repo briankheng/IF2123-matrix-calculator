@@ -13,18 +13,18 @@ public class Determinant{
 		Scanner sc = new Scanner(System.in);
         BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("PILIHAN\n1. Metode determinan dengan OBE\n2. Metode determinan dengan kofaktor");
+        System.out.println("PILIHAN\n1. Metode determinan dengan OBE\n2. Metode determinan dengan kofaktor\nPilihan: ");
         Integer choice = sc.nextInt();
         while(choice < 1 || choice > 2){
-            System.out.println("Masukan tidak valid! Silakan ulangi...");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
 
         Matrix M = new Matrix(0, 0);
-        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\n");
+        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\nPilihan: ");
         int ichoice = sc.nextInt();
         while(ichoice != 1 && ichoice != 2){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             ichoice = sc.nextInt();
         }
         if(ichoice == 1){
@@ -100,11 +100,11 @@ public class Determinant{
 	    System.out.println(st);
 
         // Simpan jawaban dalam file
-        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\nPilihan: ");
 	    choice = sc.nextInt();
 	    while (choice != 1 && choice != 2)
 	    {
-	        System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+	        System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
 	        choice = sc.nextInt();
 	    }
         if (choice == 1) {

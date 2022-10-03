@@ -37,7 +37,7 @@ public class Matrix {
         Scanner sc = new Scanner(System.in);
         BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
         Matrix M = new Matrix(0, 0);
-        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\n");
+        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\nPilihan: ");
         int choice = sc.nextInt();
         while(choice != 1 && choice != 2){
             System.out.printf("Masukan tidak valid! Silakan ulangi...\n");

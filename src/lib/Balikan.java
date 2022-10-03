@@ -20,10 +20,11 @@ public class Balikan
 		Scanner sc = new Scanner(System.in);
         BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
 
-        System.out.println("PILIHAN\n1. Metode matriks adjoin\n2. Metode eliminasi Gauss-Jordan");
+        System.out.println("PILIHAN\n1. Metode matriks adjoin\n2. Metode eliminasi Gauss-Jordan\nPilihan: ");
         Integer choice = sc.nextInt();
         while(choice < 1 || choice > 2){
             System.out.println("Masukan tidak valid! Silakan ulangi...");
+            System.out.printf("Pilihan: ");
             choice = sc.nextInt();
         }
 

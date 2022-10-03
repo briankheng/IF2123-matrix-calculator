@@ -16,10 +16,10 @@ public class Interpolate {
         double[]x = new double[1001];
         double[]y = new double[1001];
         double X = -1;
-        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\n");
+        System.out.printf("1. Masukan dari keyboard\n2. Masukan dari file\nPilihan: ");
         int choice = sc.nextInt();
         while(choice != 1 && choice != 2){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         if(choice == 1){
@@ -112,10 +112,10 @@ public class Interpolate {
         }
         System.out.printf("f(%f) = %f\n\n", X, ans);
         // Simpan jawaban dalam file
-        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\n");
+        System.out.printf("Apakah jawaban ingin disimpan dalam file?\n1. Ya\n2. Tidak\nPilihan: ");
         choice = sc.nextInt();
         while(choice != 1 && choice != 2){
-            System.out.printf("Masukan tidak valid! Silakan ulangi...\n");
+            System.out.printf("Masukan tidak valid! Silakan ulangi...\nPilihan: ");
             choice = sc.nextInt();
         }
         if(choice == 1){
