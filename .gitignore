@@ -10,3 +10,4 @@ src/Interpolate.class
 src/Bicubic.class
 src/Regresi.class
 src/ImageProcessing.class
+test/image/output.jpg
