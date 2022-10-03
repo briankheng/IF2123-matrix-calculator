@@ -9,3 +9,4 @@ src/lib/MLR.class
 src/Interpolate.class
 src/Bicubic.class
 src/ImageProcessing.class
+test/image/output.jpg
