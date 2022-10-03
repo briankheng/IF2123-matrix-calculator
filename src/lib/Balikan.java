@@ -10,10 +10,15 @@ import java.util.Scanner;
 
 public class Balikan
 {
+	/*****	Global variable	*****/
 	public static boolean isInversExist = true;
 
+
+
+	/*****	DRIVER	*****/
 	public static void DriverBalikan()
 	{
+		// User input
 		Scanner sc = new Scanner(System.in);
         BufferedReader scFile = new BufferedReader(new InputStreamReader(System.in));
 
@@ -35,11 +40,13 @@ public class Balikan
         	matrix = Matrix.inputMatrix();
         }
 
+        // Calculate the inverse
         if(choice == 1)
             matrix = BalikanAdjoin(matrix);
         else 
         	matrix = BalikanGaussJordan(matrix);
 
+        // Output
         if (!isInversExist)
         {
         	System.out.println("Matriks tidak memiliki invers!");
@@ -89,8 +96,12 @@ public class Balikan
 	}
 
 	public static Matrix swapRow(Matrix matrix, int n, int m)
+	// Input 	: Matrix m, the matrix to be swapped at; int n and m, the row index to be swapped
+	// Output	: Matrix m where row n and m are swapped
 	{
 		double temp;
+
+		// Loop through the matrix and swap the value
 		for (int i = 0; i < matrix.getColEff(); i++)
 		{
 			temp = matrix.getElmt(n,i);
@@ -102,15 +113,16 @@ public class Balikan
 	}
 
 	public static Matrix Adjoin(Matrix matrix)
-	/* Matriks harus berbentuk persegi */
-	/* Input berupa matrix biasa */
-	/* Output berupa matrix adjoin */
+	// Input 	: Square matrix
+	// Output	: Adjoin matrix
 	{
 		int size = matrix.getRowEff();
 
+		// Calculate the cofactor of the matrix
 		Matrix kofaktor = Kofaktor.Kofaktor(matrix);
 		Matrix transpose = new Matrix(size,size);
 
+		// Loop through the matrix and set the value
 		for (int i = 0; i < size; i++)
 			for (int j = 0; j < size; j++)
 				transpose.setElmt(i,j,kofaktor.getElmt(j,i));
@@ -119,21 +131,23 @@ public class Balikan
 	}
 
 	public static Matrix BalikanAdjoin(Matrix matrix)
-	/* Matriks harus berbentuk persegi */
-	/* Input berupa matrix biasa */
-	/* Output berupa invers matrix */
+	// Input 	: Square matrix
+	// Output	: Inverse matrix
 	{
 		int size = matrix.getRowEff();
 
+		// Get the adjoin matrix and the determinant
 		Matrix matrixAdjoin = Adjoin(matrix);
 		double determinan = Determinant.DetOBE(matrix);
 
+		// Check whether the determinant is 0 or NaN, if so then the inverse doesn't exist
 		if (determinan == 0 || Double.isNaN(determinan))
 		{
 			isInversExist = false;
 			return matrix;
 		}
 
+		// Loop through the matrix and set the element
 		for (int i = 0; i < size; i++)
 			for (int j = 0; j < size; j++)
 				matrixAdjoin.setElmt(i,j,matrixAdjoin.getElmt(i,j)/determinan);
@@ -142,12 +156,13 @@ public class Balikan
 	}
 
 	public static Matrix BalikanGaussJordan(Matrix matrix)
-	/* Matriks harus berbentuk persegi */
-	/* Input berupa matrix biasa */
-	/* Output berupa invers matrix */
+	// Input 	: Square matrix
+	// Output	: Inverse matrix
 	{
+		// Create a new matrix to store the inverse value
 		Matrix invers = new Matrix(matrix.getRowEff(), matrix.getColEff()*2);
 
+		// Loop through the matrix and set it to an identity matrix
 		for (int i = 0; i < matrix.getRowEff(); i++)
 		{
 			for (int j = 0; j < matrix.getColEff(); j++)
@@ -158,6 +173,7 @@ public class Balikan
 			}
 		}
 
+		// Loop through the matrix and check if there is an all zero row, if so the inverse doesn't exist
 		for (int i = 0; i < invers.getRowEff(); i++)
 		{
 			for (int j = 0; j < invers.getRowEff(); j++)
@@ -189,6 +205,7 @@ public class Balikan
 			}
 		}
 
+		// Loop through the inverse matrix and do ERO 
 		for (int i = 0; i < invers.getRowEff(); i++)
 		{
 			double div = invers.getElmt(i,i);
