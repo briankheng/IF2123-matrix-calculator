@@ -44,6 +44,8 @@ Multiple Linear Regression is solved by making a linear equation from the points
 │   │
 │   ├───Main.class
 │   │
+│   ├───Main.jar
+│   │
 │   └───Regresi.class
 │
 ├───doc
